@@ -5,6 +5,21 @@
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center; /* center horizontally */
+      align-items: center;     /* center vertically */
+      height: 100vh;           /* full browser height */
+      background: #f9f9f9;     /* optional background */
+    }
+
+    #vis {
+      width: 90vw;   /* take 90% of viewport width */
+      height: 90vh;  /* take 90% of viewport height */
+    }
+  </style>
 </head>
 <body>
   <div id="vis"></div>
@@ -12,8 +27,8 @@
   <script type="text/javascript">
     const spec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 600,
-      "height": 300,
+      "width": "container",
+      "height": "container",
       "title": "COVID-19 Cases in Malaysia by State",
       "projection": {"type": "mercator"},
       "data": {
@@ -44,7 +59,7 @@
       }
     };
 
-    vegaEmbed('#vis', spec);
+    vegaEmbed('#vis', spec, { actions: false });
   </script>
 </body>
 </html>

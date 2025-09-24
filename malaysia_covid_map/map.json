@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 600,
+  "height": 300,
+  "title":  "COVID-19 Cases in Malaysia by State",
+  "projection": {"type": "mercator"},
+  "data": {
+    "url": "data/malaysia_states.topojson",
+    "format": {"type": "topojson", "feature": "states"}
+  },
+  "transform": [
+    {
+      "lookup": "id",
+      "from": {
+        "data": {"url": "data/covid_malaysia.csv"},
+        "key": "state",
+        "fields": ["cases"]
+      }
+    }
+  ],
+  "mark": {"type": "geoshape", "stroke": "white"},
+  "encoding": {
+    "color": {
+      "field": "cases",
+      "type": "quantitative",
+      "scale": {"scheme": "Reds"}
+    },
+    "tooltip": [
+      {"field": "id", "type": "nominal", "title": "State"},
+      {"field": "cases", "type": "quantitative", "title": "Cases"}
+    ]
+  }
+}

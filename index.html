@@ -9,51 +9,40 @@
 <body>
   <h2 style="text-align:center;">COVID-19 Cases in Malaysia by State</h2>
   <div id="vis"></div>
-  
+
   <script type="text/javascript">
     const spec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "width": 600,
-      "height": 800,
-      "title": {"text": "COVID-19 Cases in Malaysia by State", "anchor": "middle"},
+      "height": 300,
+      "title": "COVID-19 Cases in Malaysia by State",
       "projection": {"type": "mercator"},
-      "layer": [
+      "data": {
+        "url": "data/malaysia_states.topojson",
+        "format": {"type": "topojson", "feature": "states"}
+      },
+      "transform": [
         {
-          "data": {
-            "url": "data/malaysia_states.topojson",
-            "format": {"type": "topojson", "feature": "states"}
-          },
-          "mark": {"type": "geoshape", "fill": "#eeeeee", "stroke": "white"}
-        },
-        {
-          "data": {"url": "data/covid_malaysia.csv"},
-          "transform": [
-            {
-              "lookup": "state",
-              "from": {
-                "data": {
-                  "url": "data/malaysia_states.topojson",
-                  "format": {"type": "topojson", "feature": "states"}
-                },
-                "key": "properties.Name",
-                "fields": ["properties", "geometry"]
-              }
-            }
-          ],
-          "mark": {"type": "geoshape"},
-          "encoding": {
-            "color": {
-              "field": "cases",
-              "type": "quantitative",
-              "scale": {"scheme": "Reds"}
-            },
-            "tooltip": [
-              {"field": "state", "type": "nominal"},
-              {"field": "cases", "type": "quantitative"}
-            ]
+          "lookup": "id",
+          "from": {
+            "data": {"url": "data/covid_malaysia.csv"},
+            "key": "state",
+            "fields": ["cases"]
           }
         }
-      ]
+      ],
+      "mark": {"type": "geoshape", "stroke": "white"},
+      "encoding": {
+        "color": {
+          "field": "cases",
+          "type": "quantitative",
+          "scale": {"scheme": "Reds"}
+        },
+        "tooltip": [
+          {"field": "id", "type": "nominal", "title": "State"},
+          {"field": "cases", "type": "quantitative", "title": "Cases"}
+        ]
+      }
     };
 
     vegaEmbed('#vis', spec);
